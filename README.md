@@ -35,6 +35,7 @@ TEST_PEP8_DIRS = [os.path.dirname(PROJECT_DIR), ]
 ```python
 TEST_PEP8_EXCLUDE = ['migrations', ] # Exclude this paths from tests
 TEST_PEP8_IGNORE = ['E128', ] # Ignore this tests
+TEST_PEP8_CONFIG_FILE = 'path/to/pep8.cfg' # Custom config file
 ```
 
 ## Running Tests

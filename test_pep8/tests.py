@@ -1,7 +1,8 @@
 import os
-import pep8
-from django.test import TestCase
+
 from django.conf import settings
+from django.test import TestCase
+import pep8
 
 
 class CollectTestReport(pep8.BaseReport):
@@ -29,24 +30,18 @@ class CollectTestReport(pep8.BaseReport):
 class PEP8Test(TestCase):
 
     def test_pep8(self):
+        exclude = getattr(settings, "TEST_PEP8_EXCLUDE", [])
+        ignore = getattr(settings, "TEST_PEP8_IGNORE", [])
+        config_file = getattr(settings, "TEST_PEP8_CONFIG_FILE", None)
 
-        try:
-            exclude = settings.TEST_PEP8_EXCLUDE
-        except AttributeError:
-            exclude = []
-
-        try:
-            ignore = settings.TEST_PEP8_IGNORE
-        except AttributeError:
-            ignore = []
-
-        pep8_style = pep8.StyleGuide(reporter=CollectTestReport,
-                                     exclude=exclude,
-                                     ignore=ignore)
+        pep8_style = pep8.StyleGuide(
+            reporter=CollectTestReport, exclude=exclude,
+            ignore=ignore, config_file=config_file
+        )
 
         report = pep8_style.check_files(settings.TEST_PEP8_DIRS)
 
         if report.all_errors:
             raise AssertionError(
-                "ERROR: PEP8 errors:\n%s" % "\n".join(report.all_errors))
-
+                "ERROR: PEP8 errors:\n%s" % "\n".join(report.all_errors)
+            )
